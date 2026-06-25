@@ -1,4 +1,9 @@
 {
   "repositoryName": "projet-next",
-  "routes": []
+  "routes": [
+    {
+      "type": "offre",
+      "path": "/offre/:uid"
+    }
+  ]
 }

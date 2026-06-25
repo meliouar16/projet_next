@@ -29,7 +29,12 @@ export default async function OffrePage({ params }: OffrePageProps) {
 
       <PrismicRichText field={offre.data.description} />
 
-      <FormulaireCandidature emailsAdmin={offre.data.emails_admin} />
+      <FormulaireCandidature
+        offreUid={offre.uid}
+        offreTitre={offre.data.titre ?? ""}
+        technologies={offre.data.technologies.map((technologie) => technologie.nom ?? "")}
+        emailsAdmin={offre.data.emails_admin}
+      />
     </main>
   );
 }

@@ -4,11 +4,11 @@ import OffreCard from "@/components/OffreCard";
 
 export default async function Home() {
   const client = createClient();
-  const dernieresOffres = await client.getAllByType("offre", {
-    orderings: [{ field: "my.offre.date", direction: "desc" }],
-    pageSize: 3,
-  });
   const toutesLesOffres = await client.getAllByType("offre");
+
+  const dernieresOffres = [...toutesLesOffres]
+    .sort((a, b) => (a.data.date && b.data.date ? b.data.date.localeCompare(a.data.date) : 0))
+    .slice(0, 3);
 
   const tags = Array.from(
     new Set(

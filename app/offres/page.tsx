@@ -1,5 +1,4 @@
 import Link from "next/link";
-import * as prismic from "@prismicio/client";
 import { createClient } from "@/prismicio";
 import OffreCard from "@/components/OffreCard";
 
@@ -11,11 +10,14 @@ export default async function OffresPage({ searchParams }: OffresPageProps) {
   const { tag } = await searchParams;
   const client = createClient();
 
-  const offres = await client.getAllByType("offre", {
-    predicates: tag ? [prismic.predicate.at("my.offre.technologies.nom", tag)] : [],
-  });
-
   const toutesLesOffres = await client.getAllByType("offre");
+
+  const offres = tag
+    ? toutesLesOffres.filter((offre) =>
+        offre.data.technologies.some((technologie) => technologie.nom === tag)
+      )
+    : toutesLesOffres;
+
   const tags = Array.from(
     new Set(
       toutesLesOffres.flatMap((offre) =>
