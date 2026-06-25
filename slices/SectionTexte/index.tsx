@@ -9,6 +9,7 @@ const SectionTexte: FC<SectionTexteProps> = ({ slice }) => {
     <section
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
+      className="px-6 py-8 flex flex-col gap-2"
     >
       <h2 className="text-accent font-bold">{slice.primary.titre}</h2>
       <PrismicRichText field={slice.primary.contenu} />

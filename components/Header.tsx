@@ -10,6 +10,7 @@ export default function Header() {
       <nav className="flex gap-4">
         <Link href="/offres">Offres</Link>
         <Link href="/profil">Profil</Link>
+        <Link href="/mentions">Mentions légales</Link>
       </nav>
     </header>
   );

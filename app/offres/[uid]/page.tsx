@@ -13,15 +13,21 @@ export default async function OffrePage({ params }: OffrePageProps) {
   const offre = await client.getByUID("offre", uid);
 
   return (
-    <main>
-      <Link href="/offres">Voir toutes les offres</Link>
+    <main className="px-6 py-12 flex flex-col gap-6 max-w-2xl">
+      <Link href="/offres" className="text-accent">
+        &lt; Voir toutes les offres
+      </Link>
 
-      <h1>{offre.data.titre}</h1>
-      <p>{offre.data.date}</p>
+      <h1 className="text-2xl font-bold text-marine">{offre.data.titre}</h1>
+      <p className="text-sm">{offre.data.date}</p>
 
-      <div>
+      <div className="flex flex-wrap gap-2">
         {offre.data.technologies.map((technologie) => (
-          <Link key={technologie.nom} href={`/offres?tag=${technologie.nom}`}>
+          <Link
+            key={technologie.nom}
+            href={`/offres?tag=${technologie.nom}`}
+            className="border border-accent text-accent rounded-full px-3 py-1 text-sm"
+          >
             {technologie.nom}
           </Link>
         ))}

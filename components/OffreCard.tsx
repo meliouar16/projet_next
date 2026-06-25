@@ -8,15 +8,17 @@ type OffreCardProps = {
 
 export default function OffreCard({ offre }: OffreCardProps) {
   return (
-    <div>
-      <BoutonPin offre={offre} />
-      <Link href={`/offres/${offre.uid}`}>
-        <h3>{offre.data.titre}</h3>
-        <p>{offre.data.date}</p>
-        <p>
-          {offre.data.technologies.map((technologie) => technologie.nom).join(", ")}
-        </p>
-      </Link>
+    <div className="bg-white rounded p-4 flex flex-col gap-2">
+      <div className="flex justify-between items-start">
+        <Link href={`/offres/${offre.uid}`}>
+          <h3 className="font-bold">{offre.data.titre}</h3>
+        </Link>
+        <BoutonPin offre={offre} />
+      </div>
+      <p className="text-sm">{offre.data.date}</p>
+      <p className="text-sm text-accent">
+        {offre.data.technologies.map((technologie) => technologie.nom).join(", ")}
+      </p>
     </div>
   );
 }

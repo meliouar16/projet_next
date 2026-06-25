@@ -27,19 +27,25 @@ export default async function OffresPage({ searchParams }: OffresPageProps) {
   );
 
   return (
-    <main>
-      <h1>Offres d&apos;emploi</h1>
-      <p>{offres.length} offres</p>
+    <main className="px-6 py-12 flex flex-col gap-8">
+      <div className="flex justify-between items-baseline">
+        <h1 className="text-2xl font-bold text-marine">Offres d&apos;emploi</h1>
+        <p>{offres.length} offres</p>
+      </div>
 
-      <div>
+      <div className="flex flex-wrap gap-2">
         {tags.map((t) => (
-          <Link key={t} href={`/offres?tag=${t}`}>
+          <Link
+            key={t}
+            href={`/offres?tag=${t}`}
+            className="border border-accent text-accent rounded-full px-3 py-1 text-sm"
+          >
             {t}
           </Link>
         ))}
       </div>
 
-      <div>
+      <div className="grid md:grid-cols-3 gap-4">
         {offres.map((offre) => (
           <OffreCard key={offre.id} offre={offre} />
         ))}

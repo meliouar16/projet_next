@@ -32,12 +32,18 @@ export default function FormulaireCandidature({
   };
 
   return (
-    <form action={postuler} onSubmit={handleSubmit}>
+    <form action={postuler} onSubmit={handleSubmit} className="flex flex-col gap-2 mt-4">
       {emailsAdmin.map((email) => (
         <input key={email.adresse} type="hidden" name="email" value={email.adresse ?? ""} />
       ))}
-      <textarea name="message" placeholder="Postuler à cette offre ..."></textarea>
-      <button type="submit">Envoyer</button>
+      <textarea
+        name="message"
+        placeholder="Postuler à cette offre ..."
+        className="border rounded p-2"
+      ></textarea>
+      <button type="submit" className="bg-marine text-white rounded px-4 py-2 self-start">
+        Envoyer
+      </button>
     </form>
   );
 }
