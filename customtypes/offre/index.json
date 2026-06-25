@@ -1,0 +1,76 @@
+{
+  "id": "offre",
+  "label": "offre",
+  "repeatable": true,
+  "status": true,
+  "format": "page",
+  "json": {
+    "Main": {
+      "uid": {
+        "type": "UID",
+        "config": {
+          "label": "UID"
+        }
+      },
+      "titre": {
+        "type": "Text",
+        "config": {
+          "label": "titre",
+          "placeholder": ""
+        }
+      },
+      "date": {
+        "type": "Date",
+        "config": {
+          "label": "date",
+          "placeholder": ""
+        }
+      },
+      "description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "description",
+          "placeholder": "",
+          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
+          "allowTargetBlank": true
+        }
+      },
+      "technologies": {
+        "type": "Group",
+        "config": {
+          "label": "technologies",
+          "repeat": true,
+          "fields": {
+            "nom": {
+              "type": "Text",
+              "config": {
+                "label": "nom",
+                "placeholder": ""
+              }
+            }
+          }
+        }
+      },
+      "emails_admin": {
+        "type": "Group",
+        "config": {
+          "label": "emails_admin",
+          "repeat": true,
+          "fields": {
+            "adresse": {
+              "type": "Text",
+              "config": {
+                "label": "adresse",
+                "placeholder": ""
+              }
+            }
+          }
+        }
+      },
+      "slices": {
+        "type": "Slices",
+        "fieldset": "Slice Zone"
+      }
+    }
+  }
+}

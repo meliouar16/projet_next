@@ -70,72 +70,149 @@ type ContentRelationshipFieldWithData<
 }[Exclude<TCustomType[number], string>["id"]];
 
 /**
- * Primary content in *Header → Default → Primary*
+ * Item in *offre → technologies*
  */
-export interface HeaderSliceDefaultPrimary {
+export interface OffreDocumentDataTechnologiesItem {
   /**
-   * logo field in *Header → Default → Primary*
+   * nom field in *offre → technologies*
    *
-   * - **Field Type**: Image
+   * - **Field Type**: Text
    * - **Placeholder**: *None*
-   * - **API ID Path**: header.default.primary.logo
-   * - **Documentation**: https://prismic.io/docs/fields/image
+   * - **API ID Path**: offre.technologies[].nom
+   * - **Documentation**: https://prismic.io/docs/fields/text
    */
-  logo: prismic.ImageField<never>;
+  nom: prismic.KeyTextField;
 }
 
 /**
- * Default variation for Header Slice
- *
- * - **API ID**: `default`
- * - **Description**: Default
- * - **Documentation**: https://prismic.io/docs/slices
+ * Item in *offre → emails_admin*
  */
-export type HeaderSliceDefault = prismic.SharedSliceVariation<
-  "default",
-  Simplify<HeaderSliceDefaultPrimary>,
-  never
->;
+export interface OffreDocumentDataEmailsAdminItem {
+  /**
+   * adresse field in *offre → emails_admin*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: offre.emails_admin[].adresse
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  adresse: prismic.KeyTextField;
+}
+
+type OffreDocumentDataSlicesSlice = never;
 
 /**
- * Slice variation for *Header*
+ * Content for offre documents
  */
-type HeaderSliceVariation = HeaderSliceDefault;
+interface OffreDocumentData {
+  /**
+   * titre field in *offre*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: offre.titre
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  titre: prismic.KeyTextField;
+
+  /**
+   * date field in *offre*
+   *
+   * - **Field Type**: Date
+   * - **Placeholder**: *None*
+   * - **API ID Path**: offre.date
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/date
+   */
+  date: prismic.DateField;
+
+  /**
+   * description field in *offre*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: offre.description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/rich-text
+   */
+  description: prismic.RichTextField;
+
+  /**
+   * technologies field in *offre*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: offre.technologies[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+   */
+  technologies: prismic.GroupField<Simplify<OffreDocumentDataTechnologiesItem>>;
+
+  /**
+   * emails_admin field in *offre*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: offre.emails_admin[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+   */
+  emails_admin: prismic.GroupField<Simplify<OffreDocumentDataEmailsAdminItem>>;
+
+  /**
+   * `slices` field in *offre*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: offre.slices[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/slices
+   */
+  slices: prismic.SliceZone<OffreDocumentDataSlicesSlice>;
+}
 
 /**
- * Header Shared Slice
+ * offre document from Prismic
  *
- * - **API ID**: `header`
- * - **Description**: Header
- * - **Documentation**: https://prismic.io/docs/slices
+ * - **API ID**: `offre`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
  */
-export type HeaderSlice = prismic.SharedSlice<"header", HeaderSliceVariation>;
+export type OffreDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithUID<Simplify<OffreDocumentData>, "offre", Lang>;
+
+export type AllDocumentTypes = OffreDocument;
 
 declare module "@prismicio/client" {
   interface CreateClient {
     (
       repositoryNameOrEndpoint: string,
       options?: prismic.ClientConfig,
-    ): prismic.Client;
+    ): prismic.Client<AllDocumentTypes>;
   }
 
   interface CreateWriteClient {
     (
       repositoryNameOrEndpoint: string,
-      options?: prismic.WriteClientConfig,
-    ): prismic.WriteClient;
+      options: prismic.WriteClientConfig,
+    ): prismic.WriteClient<AllDocumentTypes>;
   }
 
   interface CreateMigration {
-    (): prismic.Migration;
+    (): prismic.Migration<AllDocumentTypes>;
   }
 
   namespace Content {
     export type {
-      HeaderSlice,
-      HeaderSliceDefaultPrimary,
-      HeaderSliceVariation,
-      HeaderSliceDefault,
+      OffreDocument,
+      OffreDocumentData,
+      OffreDocumentDataTechnologiesItem,
+      OffreDocumentDataEmailsAdminItem,
+      OffreDocumentDataSlicesSlice,
+      AllDocumentTypes,
     };
   }
 }
