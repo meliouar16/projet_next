@@ -3,11 +3,13 @@ import { createClient } from "@/prismicio";
 import OffreCard from "@/components/OffreCard";
 
 type OffresPageProps = {
-  searchParams: Promise<{ tag?: string }>;
+  searchParams: Promise<{ tag?: string; page?: string }>;
 };
 
+const PAR_PAGE = 1;
+
 export default async function OffresPage({ searchParams }: OffresPageProps) {
-  const { tag } = await searchParams;
+  const { tag, page } = await searchParams;
   const client = createClient();
 
   const toutesLesOffres = await client.getAllByType("offre");
@@ -17,6 +19,12 @@ export default async function OffresPage({ searchParams }: OffresPageProps) {
         offre.data.technologies.some((technologie) => technologie.nom === tag)
       )
     : toutesLesOffres;
+
+  const pageActuelle = Number(page) || 1;
+  const offresPage = offres.slice(
+    (pageActuelle - 1) * PAR_PAGE,
+    pageActuelle * PAR_PAGE
+  );
 
   const tags = Array.from(
     new Set(
@@ -46,9 +54,18 @@ export default async function OffresPage({ searchParams }: OffresPageProps) {
       </div>
 
       <div className="grid md:grid-cols-3 gap-4">
-        {offres.map((offre) => (
+        {offresPage.map((offre) => (
           <OffreCard key={offre.id} offre={offre} />
         ))}
+      </div>
+
+      <div className="flex gap-4">
+        {pageActuelle > 1 && (
+          <Link href={`/offres?page=${pageActuelle - 1}`}>Précédent</Link>
+        )}
+        {offres.length > pageActuelle * PAR_PAGE && (
+          <Link href={`/offres?page=${pageActuelle + 1}`}>Suivant</Link>
+        )}
       </div>
     </main>
   );
