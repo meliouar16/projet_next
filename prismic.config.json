@@ -2,6 +2,10 @@
   "repositoryName": "projet-next",
   "routes": [
     {
+      "type": "mentions",
+      "path": "/mentions"
+    },
+    {
       "type": "offre",
       "path": "/offre/:uid"
     }

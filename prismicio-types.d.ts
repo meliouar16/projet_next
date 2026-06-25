@@ -46,6 +46,66 @@ type ContentRelationshipFieldWithData<
 		>
 }[Exclude<TCustomType[number], string>["id"]];
 
+type MentionsDocumentDataSlicesSlice = SectionTexteSlice
+
+/**
+ * Content for Mentions documents
+ */
+interface MentionsDocumentData {
+	/**
+	 * Slice Zone field in *Mentions*
+	 *
+	 * - **Field Type**: Slice Zone
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: mentions.slices[]
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/slices
+	 */
+	slices: prismic.SliceZone<MentionsDocumentDataSlicesSlice>;/**
+	 * Meta Title field in *Mentions*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: A title of the page used for social media and search engines
+	 * - **API ID Path**: mentions.meta_title
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	meta_title: prismic.KeyTextField;
+	
+	/**
+	 * Meta Description field in *Mentions*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: A brief summary of the page
+	 * - **API ID Path**: mentions.meta_description
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	meta_description: prismic.KeyTextField;
+	
+	/**
+	 * Meta Image field in *Mentions*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: mentions.meta_image
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	meta_image: prismic.ImageField<never>;
+}
+
+/**
+ * Mentions document from Prismic
+ *
+ * - **API ID**: `mentions`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type MentionsDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<MentionsDocumentData>, "mentions", Lang>;
+
 /**
  * Item in *offre → technologies*
  */
@@ -147,7 +207,55 @@ interface OffreDocumentData {
  */
 export type OffreDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<OffreDocumentData>, "offre", Lang>;
 
-export type AllDocumentTypes = OffreDocument;
+export type AllDocumentTypes = MentionsDocument | OffreDocument;
+
+/**
+ * Primary content in *SectionTexte → Default → Primary*
+ */
+export interface SectionTexteSliceDefaultPrimary {
+	/**
+	 * Titre field in *SectionTexte → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: section_texte.default.primary.titre
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	titre: prismic.KeyTextField;
+	
+	/**
+	 * Contenu field in *SectionTexte → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: section_texte.default.primary.contenu
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	contenu: prismic.RichTextField;
+}
+
+/**
+ * Default variation for SectionTexte Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type SectionTexteSliceDefault = prismic.SharedSliceVariation<"default", Simplify<SectionTexteSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *SectionTexte*
+ */
+type SectionTexteSliceVariation = SectionTexteSliceDefault
+
+/**
+ * SectionTexte Shared Slice
+ *
+ * - **API ID**: `section_texte`
+ * - **Description**: *None*
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type SectionTexteSlice = prismic.SharedSlice<"section_texte", SectionTexteSliceVariation>;
 
 declare module "@prismicio/client" {
 	interface CreateClient {
@@ -164,11 +272,18 @@ declare module "@prismicio/client" {
 	
 	namespace Content {
 		export type {
+			MentionsDocument,
+			MentionsDocumentData,
+			MentionsDocumentDataSlicesSlice,
 			OffreDocument,
 			OffreDocumentData,
 			OffreDocumentDataTechnologiesItem,
 			OffreDocumentDataEmailsAdminItem,
-			AllDocumentTypes
+			AllDocumentTypes,
+			SectionTexteSlice,
+			SectionTexteSliceDefaultPrimary,
+			SectionTexteSliceVariation,
+			SectionTexteSliceDefault
 		}
 	}
 }
